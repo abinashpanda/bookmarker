@@ -8,4 +8,12 @@
   body {
     @apply text-text-primary;
   }
+
+  * {
+    @apply focus:ring-2 focus:ring-slate-600 focus:ring-offset-1 focus:outline-none;
+  }
+
+  a {
+    @apply hover:underline;
+  }
 }
