@@ -1,34 +1,48 @@
 import BookmarkCard from 'components/bookmark-card'
+import { BookmarkLoader } from 'components/loaders'
+import { range } from 'lodash'
+import { useMemo } from 'react'
 import { HiBookmark } from 'react-icons/hi'
-import { Bookmark } from 'types/bookmark.types'
-
-const BOOKMARKS: Bookmark[] = [
-  {
-    id: 'bookmark-1',
-    image:
-      'https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/uZ3hQS2EPrA9csOgkoXI.png?auto=format&fit=max&w=1200&fm=auto',
-    title: 'How browsers work',
-    site: {
-      favicon: 'https://web.dev/images/favicon.ico',
-      url: 'https://web.dev/howbrowserswork/',
-      name: 'web.dev',
-    },
-  },
-  {
-    id: 'bookmark-2',
-    title: 'Fed Risks Imploding The Highly Levered Global Financial System: Lawrence Lepard',
-    image:
-      'https://substackcdn.com/image/fetch/w_1200,h_600,c_limit,f_jpg,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F9ec5d244-9c39-4b8f-88b9-67112afdfba3_435x340.png',
-    description: "Part 1 of Larry's latest take on the market, crypto, gold and the Fed.",
-    site: {
-      favicon:
-        'https://bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com/public/images/26ebf1e2-3982-4673-bb95-e29f9a1becb7/favicon.ico',
-      url: 'https://quoththeraven.substack.com/p/fed-risks-imploding-the-highly-levered',
-    },
-  },
-]
+import { useQuery } from 'react-query'
+import Empty from 'ui/empty'
+import ErrorMessage from 'ui/error-message'
+import { fetchBookmarks } from './queries'
 
 export default function Home() {
+  const { data, isLoading, isError } = useQuery(['bookmarks'], fetchBookmarks)
+
+  const content = useMemo(() => {
+    if (isLoading) {
+      return (
+        <div className="space-y-4">
+          {range(4).map((key) => (
+            <BookmarkLoader key={key} />
+          ))}
+        </div>
+      )
+    }
+
+    if (isError) {
+      return <ErrorMessage />
+    }
+
+    if (data) {
+      if (data.length === 0) {
+        return <Empty />
+      }
+
+      return (
+        <div className="space-y-4">
+          {data.map((bookmark) => (
+            <BookmarkCard bookmark={bookmark} key={bookmark.id} />
+          ))}
+        </div>
+      )
+    }
+
+    return null
+  }, [isLoading, isError, data])
+
   return (
     <>
       <div className="mx-auto max-w-screen-lg">
@@ -36,11 +50,7 @@ export default function Home() {
           <HiBookmark className="h-5 w-5" />
           <span>Saved Bookmarks</span>
         </h2>
-        <div className="space-y-4">
-          {BOOKMARKS.map((bookmark) => (
-            <BookmarkCard bookmark={bookmark} key={bookmark.id} />
-          ))}
-        </div>
+        {content}
       </div>
     </>
   )

@@ -21,9 +21,11 @@ export default function BookmarkCard({ bookmark, className, style }: BookmarkCar
       <div className="max-h-[160px] min-h-[140px] w-40 overflow-hidden rounded-l border-r">
         <img src={bookmark.image ?? 'logo-light.svg'} className="h-full object-cover object-center" />
       </div>
-      <div className="flex flex-col overflow-hidden px-4 py-2">
-        <div className="font-semibold">{bookmark.title}</div>
-        {bookmark.description ? <div className="text-sm text-text-secondary">{bookmark.description}</div> : null}
+      <div className="flex flex-1 flex-col overflow-hidden px-4 py-2">
+        <div className="truncate font-semibold">{bookmark.title}</div>
+        {bookmark.description ? (
+          <div className="truncate text-sm text-text-secondary">{bookmark.description}</div>
+        ) : null}
         <div className="flex-1" />
         <div className="mb-4 flex items-center space-x-2 text-text-secondary">
           <img className="h-4 w-4 rounded-full border object-cover" src={bookmark.site.favicon} />
