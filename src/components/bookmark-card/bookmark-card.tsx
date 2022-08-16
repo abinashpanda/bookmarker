@@ -24,7 +24,7 @@ export default function BookmarkCard({ bookmark, className, style }: BookmarkCar
       <div className="flex flex-1 flex-col overflow-hidden px-4 py-2">
         <div className="truncate font-semibold">{bookmark.title}</div>
         {bookmark.description ? (
-          <div className="truncate text-sm text-text-secondary">{bookmark.description}</div>
+          <div className="mt-1 truncate text-sm text-text-secondary">{bookmark.description}</div>
         ) : null}
         <div className="flex-1" />
         <div className="mb-4 flex items-center space-x-2 text-text-secondary">
