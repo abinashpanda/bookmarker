@@ -1,5 +1,3 @@
-type BookmarkType = 'article' | 'video' | 'podcast'
-
 type BookmarkSite = {
   url: string
   name?: string
@@ -12,5 +10,4 @@ export type Bookmark = {
   title: string
   description?: string
   site: BookmarkSite
-  type: BookmarkType
 }

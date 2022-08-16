@@ -18,6 +18,7 @@ module.exports = {
         brand: {
           primary: colors.slate['900'],
         },
+        background: colors.white,
       },
     },
   },

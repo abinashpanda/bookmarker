@@ -10,13 +10,30 @@
     "format": "prettier --write --no-error-on-unmatched-patter src/**/*.{ts,tsx}"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.6",
+    "@storyofams/next-api-decorators": "^1.8.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "clsx": "^1.2.1",
+    "got": "^12.3.1",
+    "html-get": "^2.9.22",
+    "metascraper": "^5.30.2",
+    "metascraper-description": "^5.30.2",
+    "metascraper-image": "^5.30.2",
+    "metascraper-logo": "^5.30.2",
+    "metascraper-logo-favicon": "^5.30.2",
+    "metascraper-publisher": "^5.30.2",
+    "metascraper-title": "^5.30.2",
+    "metascraper-url": "^5.30.2",
+    "metascraper-video": "^5.30.2",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "sharp": "^0.30.7"
   },
   "devDependencies": {
+    "@types/metascraper": "^5.14.1",
     "@types/node": "18.7.5",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
