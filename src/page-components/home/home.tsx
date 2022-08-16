@@ -1,4 +1,5 @@
 import BookmarkCard from 'components/bookmark-card'
+import Modal from 'components/modal'
 import { HiBookmark } from 'react-icons/hi'
 import { Bookmark } from 'types/bookmark.types'
 
@@ -13,7 +14,6 @@ const BOOKMARKS: Bookmark[] = [
       url: 'https://web.dev/howbrowserswork/',
       name: 'web.dev',
     },
-    type: 'article',
   },
   {
     id: 'bookmark-2',
@@ -26,22 +26,26 @@ const BOOKMARKS: Bookmark[] = [
         'https://bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com/public/images/26ebf1e2-3982-4673-bb95-e29f9a1becb7/favicon.ico',
       url: 'https://quoththeraven.substack.com/p/fed-risks-imploding-the-highly-levered',
     },
-    type: 'article',
   },
 ]
 
 export default function Home() {
   return (
-    <div className="mx-auto max-w-screen-lg">
-      <h2 className="mb-4 flex items-center space-x-1 font-medium">
-        <HiBookmark className="h-5 w-5" />
-        <span>Saved Bookmarks</span>
-      </h2>
-      <div className="space-y-4">
-        {BOOKMARKS.map((bookmark) => (
-          <BookmarkCard bookmark={bookmark} key={bookmark.id} />
-        ))}
+    <>
+      <div className="mx-auto max-w-screen-lg">
+        <h2 className="mb-4 flex items-center space-x-1 font-medium">
+          <HiBookmark className="h-5 w-5" />
+          <span>Saved Bookmarks</span>
+        </h2>
+        <div className="space-y-4">
+          {BOOKMARKS.map((bookmark) => (
+            <BookmarkCard bookmark={bookmark} key={bookmark.id} />
+          ))}
+        </div>
       </div>
-    </div>
+      <Modal visible onRequestClose={() => {}} title="Add Bookmark">
+        <input className="rounded border px-3 py-2" />
+      </Modal>
+    </>
   )
 }

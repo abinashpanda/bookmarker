@@ -6,13 +6,14 @@ import { Fragment } from 'react'
 type ModalProps = {
   visible: boolean
   onRequestClose: () => void
+  onOk?: () => void
   title?: string
   children: React.ReactNode
   className?: string
   style?: React.CSSProperties
 }
 
-export default function Modal({ visible, onRequestClose, title, children, className, style }: ModalProps) {
+export default function Modal({ visible, onRequestClose, onOk, title, children, className, style }: ModalProps) {
   return (
     <Transition appear show={visible} as={Fragment}>
       <Dialog
@@ -53,7 +54,11 @@ export default function Modal({ visible, onRequestClose, title, children, classN
                 {title}
               </Dialog.Title>
             ) : null}
-            <div className="max-h-[480px] overflow-auto lg:max-h-[600px]">{children}</div>
+            <div className="max-h-[480px] overflow-auto p-4 lg:max-h-[600px]">{children}</div>
+            <div className="flex items-center justify-end space-x-2 border-t p-2">
+              <button onClick={onOk}>Ok</button>
+              <button onClick={onRequestClose}>Cancel</button>
+            </div>
           </div>
         </Transition.Child>
         <button onClick={onRequestClose} className="fixed top-4 right-4 rounded-sm p-2 text-text-on-primary">
