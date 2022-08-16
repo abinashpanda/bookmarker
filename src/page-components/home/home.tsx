@@ -1,5 +1,4 @@
 import BookmarkCard from 'components/bookmark-card'
-import Modal from 'components/modal'
 import { HiBookmark } from 'react-icons/hi'
 import { Bookmark } from 'types/bookmark.types'
 
@@ -43,9 +42,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <Modal visible onRequestClose={() => {}} title="Add Bookmark">
-        <input className="rounded border px-3 py-2" />
-      </Modal>
     </>
   )
 }

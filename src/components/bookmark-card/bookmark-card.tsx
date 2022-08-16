@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { HiExternalLink, HiFolderOpen, HiShare } from 'react-icons/hi'
 import { Bookmark } from 'types/bookmark.types'
+import Button from 'ui/button'
 
 type BookmarkCardProps = {
   bookmark: Bookmark
@@ -29,14 +30,26 @@ export default function BookmarkCard({ bookmark, className, style }: BookmarkCar
           <div className="truncate text-xs">{bookmark.site.name ?? bookmark.site.url}</div>
         </div>
         <div className="-mb-10 flex transform items-center space-x-4 transition-all duration-100 group-focus-within:mb-0 group-hover:mb-0 group-focus-visible:mb-0">
-          <button className="flex items-center space-x-2 rounded border px-2 py-1.5">
-            <HiShare />
-            <span className="text-xs font-medium">Share</span>
-          </button>
-          <button className="flex items-center space-x-2 rounded border px-2 py-1.5">
-            <HiFolderOpen />
-            <span className="text-xs font-medium">Move</span>
-          </button>
+          <Button
+            icon={<HiShare />}
+            buttonType="secondary"
+            size="small"
+            onClick={(event) => {
+              event.preventDefault()
+            }}
+          >
+            Share
+          </Button>
+          <Button
+            icon={<HiFolderOpen />}
+            buttonType="secondary"
+            size="small"
+            onClick={(event) => {
+              event.preventDefault()
+            }}
+          >
+            Move
+          </Button>
         </div>
       </div>
       <div className="absolute top-2 right-2 flex items-center space-x-2 rounded-md border px-2 py-1 text-sm opacity-0 transition-opacity duration-100 group-hover:opacity-100 group-focus-visible:opacity-100">

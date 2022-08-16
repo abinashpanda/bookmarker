@@ -1,19 +1,32 @@
 import { Transition, Dialog } from '@headlessui/react'
-import { HiOutlineX } from 'react-icons/hi'
+import { HiCheck, HiOutlineX, HiX } from 'react-icons/hi'
 import clsx from 'clsx'
 import { Fragment } from 'react'
+import Button, { ButtonProps } from 'ui/button'
 
 type ModalProps = {
   visible: boolean
   onRequestClose: () => void
+  cancelButtonProps?: Omit<ButtonProps, 'onClick'>
   onOk?: () => void
+  okButtonProps?: Omit<ButtonProps, 'onClick'>
   title?: string
   children: React.ReactNode
   className?: string
   style?: React.CSSProperties
 }
 
-export default function Modal({ visible, onRequestClose, onOk, title, children, className, style }: ModalProps) {
+export default function Modal({
+  visible,
+  onRequestClose,
+  cancelButtonProps = {},
+  onOk,
+  okButtonProps = {},
+  title,
+  children,
+  className,
+  style,
+}: ModalProps) {
   return (
     <Transition appear show={visible} as={Fragment}>
       <Dialog
@@ -44,7 +57,7 @@ export default function Modal({ visible, onRequestClose, onOk, title, children, 
         >
           <div
             className={clsx(
-              'relative z-50 w-[calc(100vw-32px)] rounded-md bg-background text-text-primary lg:w-[32rem]',
+              'relative z-50 w-[calc(100vw-32px)] rounded-md bg-background text-text-primary lg:w-[560px]',
               className,
             )}
             style={style}
@@ -54,10 +67,20 @@ export default function Modal({ visible, onRequestClose, onOk, title, children, 
                 {title}
               </Dialog.Title>
             ) : null}
-            <div className="max-h-[480px] overflow-auto p-4 lg:max-h-[600px]">{children}</div>
+            <div className="max-h-[480px] overflow-auto px-5 py-4 lg:max-h-[600px]">{children}</div>
             <div className="flex items-center justify-end space-x-2 border-t p-2">
-              <button onClick={onOk}>Ok</button>
-              <button onClick={onRequestClose}>Cancel</button>
+              <Button icon={<HiCheck />} size="small" onClick={onOk} buttonType="secondary" {...okButtonProps}>
+                OK
+              </Button>
+              <Button
+                icon={<HiX />}
+                size="small"
+                onClick={onRequestClose}
+                buttonType="secondary"
+                {...cancelButtonProps}
+              >
+                Cancel
+              </Button>
             </div>
           </div>
         </Transition.Child>

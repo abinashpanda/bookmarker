@@ -1,5 +1,5 @@
+import CreateBookmarkButton from 'components/create-bookmark-button'
 import Link from 'next/link'
-import { HiPlus } from 'react-icons/hi'
 
 const NAVBAR_HEIGHT = 64
 
@@ -14,10 +14,7 @@ export default function Navbar() {
           </a>
         </Link>
         <span className="flex-1" />
-        <button className="flex items-center space-x-2 rounded-md border bg-brand-primary px-3 py-1 text-text-on-primary">
-          <HiPlus />
-          <span className="font-medium">Bookmark</span>
-        </button>
+        <CreateBookmarkButton />
       </div>
     </div>
   )
