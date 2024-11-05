@@ -11,7 +11,8 @@
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
     "typecheck:watch": "tsc --watch",
-    "deploy:production": "sst deploy --stage production"
+    "deploy:production": "sst deploy --stage production",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "5.21.1",

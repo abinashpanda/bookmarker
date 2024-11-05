@@ -3,7 +3,7 @@ import { authenticator } from '@/services/auth.server'
 
 export const loader = () => redirect('/login')
 
-export const action = ({ request }: ActionFunctionArgs) => {
+export function action({ request }: ActionFunctionArgs) {
   return authenticator.authenticate('google', request)
 }
 

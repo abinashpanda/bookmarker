@@ -16,6 +16,7 @@ export default $config({
     const authSecret = new sst.Secret('BOOKMARKER_AUTH_SECRET')
 
     const app = new sst.aws.Remix('BookmarkerWeb', {
+      edge: false,
       link: [googleClientId, googleClientSecret, databaseUrl, authSecret],
       domain:
         $app.stage === 'production'
@@ -24,6 +25,11 @@ export default $config({
               redirects: ['www.bookmarker.prodioslabs.com'],
             }
           : undefined,
+      transform: {
+        server: {
+          copyFiles: [{ from: 'node_modules/.prisma/client/' }],
+        },
+      },
     })
 
     return {
