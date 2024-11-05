@@ -10,7 +10,9 @@ const googleStrategy = new GoogleStrategy(
   {
     clientID: Resource['BOOKMARKER_GOOGLE_CLIENT_ID'].value,
     clientSecret: Resource['BOOKMARKER_GOOGLE_CLIENT_SECRET'].value,
-    callbackURL: '/auth/google/callback',
+    callbackURL: import.meta.env.DEV
+      ? '/auth/google/callback'
+      : 'https://bookmarker.prodioslabs.com/auth/google/callback',
   },
   async ({ profile }) => {
     let user = await prisma.user.findUnique({ where: { email: profile.emails[0].value } })
