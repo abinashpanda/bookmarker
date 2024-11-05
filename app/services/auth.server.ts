@@ -1,15 +1,15 @@
 import { Authenticator } from 'remix-auth'
-import { sessionStorage } from '@/services/session.server'
 import { GoogleStrategy } from 'remix-auth-google'
-import { env } from '@/lib/env'
 import { User } from '@prisma/client'
+import { Resource } from 'sst/resource'
+import { sessionStorage } from './session.server'
 import { prisma } from './db.server'
 
 export const authenticator = new Authenticator<User>(sessionStorage)
 const googleStrategy = new GoogleStrategy(
   {
-    clientID: env.GOOGLE_CLIENT_ID,
-    clientSecret: env.GOOGLE_CLIENT_SECRET,
+    clientID: Resource['BOOKMARKER_GOOGLE_CLIENT_ID'].value,
+    clientSecret: Resource['BOOKMARKER_GOOGLE_CLIENT_SECRET'].value,
     callbackURL: '/auth/google/callback',
   },
   async ({ profile }) => {

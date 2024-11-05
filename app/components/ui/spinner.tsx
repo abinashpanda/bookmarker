@@ -10,7 +10,7 @@ const ANGLE = 360 / NUM_AXIS
 
 export function Spinner({ className, style }: SpinnerProps) {
   return (
-    <div className={cn('text-muted-foreground relative h-4 w-4', className)} style={style}>
+    <div className={cn('relative h-4 w-4 text-muted-foreground', className)} style={style}>
       {Array.from({ length: NUM_AXIS }, (_, i) => i).map((i) => (
         <div
           key={i}

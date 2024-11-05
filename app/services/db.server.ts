@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { Resource } from 'sst'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -8,6 +9,7 @@ export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     log: import.meta.env.DEV ? ['error', 'warn'] : ['error'],
+    datasourceUrl: Resource['BOOKMARKER_DATABASE_URL'].value,
   })
 
 /**

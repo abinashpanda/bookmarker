@@ -13,7 +13,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ className, style, type
   return (
     <div
       className={cn(
-        'border-input focus-within:ring-ring flex h-9 w-full items-center overflow-hidden rounded-md border bg-transparent text-sm focus-within:outline-none focus-within:ring-1',
+        'flex h-9 w-full items-center overflow-hidden rounded-md border border-input bg-transparent text-sm focus-within:outline-none focus-within:ring-1 focus-within:ring-ring',
         className,
       )}
       style={style}
@@ -23,7 +23,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ className, style, type
       ) : null}
       <input
         type={type === 'password' ? (passwordVisible ? 'text' : 'password') : type}
-        className="placeholder:text-muted-foreground flex h-full min-w-0 flex-1 appearance-none bg-transparent px-3 py-1 shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-within:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex h-full min-w-0 flex-1 appearance-none bg-transparent px-3 py-1 shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:outline-none disabled:cursor-not-allowed disabled:opacity-50"
         ref={ref}
         {...props}
       />
@@ -31,14 +31,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ className, style, type
         .with('password', () => (
           <Toggle size="sm" pressed={passwordVisible} onPressedChange={setPasswordVisible} disabled={props.disabled}>
             {passwordVisible ? (
-              <EyeOffIcon className="text-muted-foreground h-4 w-4" />
+              <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
             ) : (
-              <EyeIcon className="text-muted-foreground h-4 w-4" />
+              <EyeIcon className="h-4 w-4 text-muted-foreground" />
             )}
           </Toggle>
         ))
         .with('search', () => (
-          <div className="text-muted-foreground flex flex-shrink-0 items-center justify-center self-stretch px-2">
+          <div className="flex flex-shrink-0 items-center justify-center self-stretch px-2 text-muted-foreground">
             <SearchIcon className="h-4 w-4" />
           </div>
         ))

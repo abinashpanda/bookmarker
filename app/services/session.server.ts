@@ -1,6 +1,6 @@
 // app/services/session.server.ts
-import { env } from '@/lib/env'
 import { createCookieSessionStorage } from '@remix-run/node'
+import { Resource } from 'sst'
 
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
@@ -8,7 +8,7 @@ export const sessionStorage = createCookieSessionStorage({
     sameSite: 'lax',
     path: '/',
     httpOnly: true,
-    secrets: [env.AUTH_SECRET],
+    secrets: [Resource['BOOKMARKER_AUTH_SECRET'].value],
     secure: process.env.NODE_ENV === 'production',
   },
 })
