@@ -13,6 +13,7 @@
     "typecheck:watch": "tsc --watch"
   },
   "dependencies": {
+    "@prisma/client": "5.21.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
@@ -21,15 +22,20 @@
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "@remix-run/serve": "^2.13.1",
+    "@t3-oss/env-core": "^0.11.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "isbot": "^4.1.0",
     "lucide-react": "^0.454.0",
+    "prisma": "^5.21.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "remix-auth": "^3.7.0",
+    "remix-auth-google": "^2.0.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "ts-pattern": "^5.5.0"
+    "ts-pattern": "^5.5.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.13.1",
