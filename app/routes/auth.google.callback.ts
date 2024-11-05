@@ -7,3 +7,7 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
     failureRedirect: '/login',
   })
 }
+
+export default function GoogleAuthCallback() {
+  return null
+}
