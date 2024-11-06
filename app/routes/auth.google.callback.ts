@@ -8,7 +8,3 @@ export async function loader({ request }: LoaderFunctionArgs) {
   })
   return result
 }
-
-export default function GoogleAuthCallback() {
-  return null
-}
