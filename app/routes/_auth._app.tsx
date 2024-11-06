@@ -1,6 +1,6 @@
 import { Form, Link, Outlet, useLoaderData, useNavigation } from '@remix-run/react'
 import { authenticator } from '@/services/auth.server'
-import { redirect, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
+import { type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
 import {
   Sidebar,
   SidebarContent,
@@ -28,6 +28,7 @@ import { AlbumIcon, CheckIcon, ChevronUpIcon, LibraryBigIcon, MoonIcon, SunIcon 
 import { Spinner } from '@/components/ui/spinner'
 import { Theme, useTheme } from 'remix-themes'
 import { cloneElement } from 'react'
+import invariant from 'tiny-invariant'
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Bookmarker' }, { name: 'description', content: 'Your AI powered bookmark organizer' }]
@@ -35,9 +36,7 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await authenticator.isAuthenticated(request)
-  if (!user) {
-    return redirect('/login')
-  }
+  invariant(user, 'user should be authenticated')
   return user
 }
 

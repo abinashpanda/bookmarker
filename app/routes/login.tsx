@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import { Logo } from '@/components/ui/logo'
 import { authenticator } from '@/services/auth.server'
-import { LoaderFunctionArgs, redirect } from '@remix-run/node'
+import { type LoaderFunctionArgs, redirect } from '@remix-run/node'
 import { Form } from '@remix-run/react'
 import { BookmarkIcon, SearchIcon, StarIcon } from 'lucide-react'
 
