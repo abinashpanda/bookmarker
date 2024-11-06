@@ -30,7 +30,7 @@ import { Theme, useTheme } from 'remix-themes'
 import { cloneElement } from 'react'
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Bookmarker' }, { name: 'description', content: 'Your AI-powered bookmark organizer' }]
+  return [{ title: 'Bookmarker' }, { name: 'description', content: 'Your AI powered bookmark organizer' }]
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
