@@ -218,7 +218,7 @@ Sidebar.displayName = 'Sidebar'
 
 const SidebarTrigger = forwardRef<React.ElementRef<typeof Button>, React.ComponentProps<typeof Button>>(
   ({ className, onClick, ...props }, ref) => {
-    const { toggleSidebar } = useSidebar()
+    const { toggleSidebar, open } = useSidebar()
 
     return (
       <Button
@@ -233,7 +233,7 @@ const SidebarTrigger = forwardRef<React.ElementRef<typeof Button>, React.Compone
         }}
         {...props}
       >
-        <PanelRightOpenIcon className="size-5" />
+        <PanelRightOpenIcon className={cn('size-5 duration-200', open ? undefined : 'rotate-180 transform')} />
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
     )

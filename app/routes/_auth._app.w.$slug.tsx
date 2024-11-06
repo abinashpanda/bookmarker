@@ -1,6 +1,7 @@
 import { prisma } from '@/services/db.server'
 import { redirect, type LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { LibraryBigIcon, PackageSearchIcon } from 'lucide-react'
 import invariant from 'tiny-invariant'
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -17,8 +18,15 @@ export default function WorkspacePage() {
 
   return (
     <div>
-      <div className="mb-2 text-3xl font-medium">{workspace.name}</div>
-      <div>All your bookmarks</div>
+      <div className="flex items-center gap-4">
+        <div className="rounded-md border border-accent/20 bg-accent/10 p-2 text-accent">
+          <PackageSearchIcon className="size-9" strokeWidth={1.25} />
+        </div>
+        <div>
+          <div className="text-xl font-medium">{workspace.name}</div>
+          <div className="text-muted-foreground">Browse your entire bookmarked collection</div>
+        </div>
+      </div>
     </div>
   )
 }

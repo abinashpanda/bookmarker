@@ -14,7 +14,7 @@ export const buttonVariants = cva(
         'destructive-outline': 'border border-destructive/30 text-destructive hover:bg-destructive/10',
         outline: 'border border-input bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-muted hover:text-muted-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         'brand-outline': 'border border-primary bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary',
         danger:

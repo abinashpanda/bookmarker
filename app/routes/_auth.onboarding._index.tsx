@@ -25,11 +25,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return user
 }
 
-const validationSchema = z.object({
+const createWorkspaceSchema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
 })
-const resolver = zodResolver(validationSchema)
+const resolver = zodResolver(createWorkspaceSchema)
 
 export async function action({ request }: ActionFunctionArgs) {
   const user = await authenticator.isAuthenticated(request)
@@ -38,7 +38,7 @@ export async function action({ request }: ActionFunctionArgs) {
     errors,
     receivedValues: defaultValues,
     data,
-  } = await getValidatedFormData<z.infer<typeof validationSchema>>(request, resolver)
+  } = await getValidatedFormData<z.infer<typeof createWorkspaceSchema>>(request, resolver)
   if (errors) {
     return json({ errors, defaultValues })
   }
@@ -56,6 +56,12 @@ export async function action({ request }: ActionFunctionArgs) {
       createdByUserId: user.id,
     },
   })
+  await prisma.workspaceUserAssociation.create({
+    data: {
+      userId: user.id,
+      workspaceId: workspaceCreated.id,
+    },
+  })
   const isOrgUser = getDomainNameFromEmail(user.email) !== 'gmail.com'
   if (isOrgUser) {
     return redirect('/onboarding/org')
@@ -67,7 +73,7 @@ export default function Onboarding() {
   const user = useLoaderData<typeof loader>()
   const defaultColletionName = useMemo(() => `${user.name.split(' ')[0]} Collection`, [user.name])
 
-  const form = useRemixForm<z.infer<typeof validationSchema>>({
+  const form = useRemixForm<z.infer<typeof createWorkspaceSchema>>({
     resolver,
     mode: 'onSubmit',
     defaultValues: {

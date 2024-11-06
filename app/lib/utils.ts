@@ -15,3 +15,7 @@ export function slugify(str: string) {
 export function getDomainNameFromEmail(email: string) {
   return email.split('@')[1]
 }
+
+export function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
