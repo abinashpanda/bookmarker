@@ -7,6 +7,11 @@ export default $config({
       name: 'bookmarker',
       removal: input?.stage === 'production' ? 'retain' : 'remove',
       home: 'aws',
+      providers: {
+        aws: {
+          region: 'ap-south-1',
+        },
+      },
     }
   },
   async run() {
