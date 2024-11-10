@@ -2,16 +2,20 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import { Logo } from '@/components/ui/logo'
 import { authenticator } from '@/services/auth.server'
-import { type LoaderFunctionArgs, redirect } from '@remix-run/node'
+import { json, type LoaderFunctionArgs, MetaFunction, redirect } from '@remix-run/node'
 import { Form } from '@remix-run/react'
 import { BookmarkIcon, SearchIcon, StarIcon } from 'lucide-react'
+
+export const meta: MetaFunction = () => {
+  return [{ title: 'Login', content: 'Login to Bookmarker' }]
+}
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const isAuthenticated = await authenticator.isAuthenticated(request)
   if (isAuthenticated) {
     return redirect('/')
   }
-  return {}
+  return json({})
 }
 
 export default function Login() {

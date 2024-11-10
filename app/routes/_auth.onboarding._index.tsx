@@ -34,6 +34,7 @@ const resolver = zodResolver(createWorkspaceSchema)
 export async function action({ request }: ActionFunctionArgs) {
   const user = await authenticator.isAuthenticated(request)
   invariant(user, 'user should be authenticated')
+
   const {
     errors,
     receivedValues: defaultValues,
@@ -42,31 +43,36 @@ export async function action({ request }: ActionFunctionArgs) {
   if (errors) {
     return json({ errors, defaultValues })
   }
-  const workspace = await prisma.workspace.findUnique({ where: { slug: data.slug } })
-  if (workspace) {
+
+  if (await prisma.workspace.findUnique({ where: { slug: data.slug } })) {
     return json({
       errors: { slug: { message: 'Workspace already exists', type: 'custom' } } as Record<string, FieldError>,
       defaultValues,
     })
   }
-  const workspaceCreated = await prisma.workspace.create({
-    data: {
-      name: data.name,
-      slug: data.slug,
-      createdByUserId: user.id,
-    },
+
+  const workspace = await prisma.$transaction(async (tx) => {
+    const workspace = await tx.workspace.create({
+      data: {
+        name: data.name,
+        slug: data.slug,
+        createdByUserId: user.id,
+      },
+    })
+    await tx.workspaceUserAssociation.create({
+      data: {
+        userId: user.id,
+        workspaceId: workspace.id,
+      },
+    })
+    return workspace
   })
-  await prisma.workspaceUserAssociation.create({
-    data: {
-      userId: user.id,
-      workspaceId: workspaceCreated.id,
-    },
-  })
+
   const isOrgUser = getDomainNameFromEmail(user.email) !== 'gmail.com'
   if (isOrgUser) {
     return redirect('/onboarding/org')
   }
-  return redirect(`/w/${workspaceCreated.slug}`)
+  return redirect(`/w/${workspace.slug}`)
 }
 
 export default function Onboarding() {

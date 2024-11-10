@@ -8,7 +8,7 @@ import { capitalize, getDomainNameFromEmail, slugify } from '@/lib/utils'
 import { authenticator } from '@/services/auth.server'
 import { prisma } from '@/services/db.server'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type ActionFunctionArgs, json, redirect, type LoaderFunctionArgs } from '@remix-run/node'
+import { type ActionFunctionArgs, json, redirect, type LoaderFunctionArgs, TypedResponse } from '@remix-run/node'
 import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
 import { useMemo } from 'react'
 import { FieldError } from 'react-hook-form'
@@ -56,7 +56,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     })
     return json({ type: 'join-workspace' as const, workspace, members })
   }
-  console.log(workspace, userWorkspaceAssociation)
 
   return redirect(`/w/${workspace.slug}`)
 }
@@ -87,41 +86,48 @@ export async function action({ request }: ActionFunctionArgs) {
     return json({ errors, defaultValues })
   }
 
-  if (data.type === 'create-workspace') {
-    const workspace = await prisma.workspace.findUnique({ where: { slug: data.slug } })
-    if (workspace) {
-      return json({
-        errors: { slug: { message: 'Workspace already exists', type: 'custom' } } as Record<string, FieldError>,
-        defaultValues,
+  return match(data)
+    .returnType<Promise<TypedResponse>>()
+    .with({ type: 'create-workspace' }, async ({ slug, name, domain }) => {
+      if (await prisma.workspace.findUnique({ where: { slug: slug } })) {
+        return json({
+          errors: { slug: { message: 'Workspace already exists', type: 'custom' } } as Record<string, FieldError>,
+          defaultValues,
+        })
+      }
+      const workspace = await prisma.$transaction(async (tx) => {
+        const workspace = await tx.workspace.create({
+          data: {
+            name,
+            slug,
+            domain,
+            createdByUserId: user.id,
+            type: 'ORGANIZATION',
+          },
+        })
+        await tx.workspaceUserAssociation.create({
+          data: {
+            userId: user.id,
+            workspaceId: workspace.id,
+          },
+        })
+        return workspace
       })
-    }
-    const workspaceCreated = await prisma.workspace.create({
-      data: {
-        name: data.name,
-        slug: data.slug,
-        domain: data.domain,
-        createdByUserId: user.id,
-        type: 'ORGANIZATION',
-      },
+      return redirect(`/w/${workspace.slug}`)
     })
-    await prisma.workspaceUserAssociation.create({
-      data: {
-        userId: user.id,
-        workspaceId: workspaceCreated.id,
-      },
+    .with({ type: 'join-workspace' }, async ({ workspaceId }) => {
+      const { workspace } = await prisma.workspaceUserAssociation.create({
+        data: {
+          userId: user.id,
+          workspaceId,
+        },
+        include: {
+          workspace: true,
+        },
+      })
+      return redirect(`/w/${workspace.slug}`)
     })
-    return redirect(`/w/${workspaceCreated.slug}`)
-  } else if (data.type === 'join-workspace') {
-    const workspace = await prisma.workspace.findUnique({ where: { id: data.workspaceId } })
-    invariant(workspace, 'workspace should exist')
-    await prisma.workspaceUserAssociation.create({
-      data: {
-        userId: user.id,
-        workspaceId: workspace.id,
-      },
-    })
-    return redirect(`/w/${workspace.slug}`)
-  }
+    .exhaustive()
 }
 
 export default function OnboardingOrg() {

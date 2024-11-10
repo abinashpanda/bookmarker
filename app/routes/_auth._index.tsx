@@ -16,6 +16,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return redirect(`/w/${userWorkspaces[0].workspace.slug}`)
 }
 
-export default function Index() {
+export default function Home() {
   return null
 }

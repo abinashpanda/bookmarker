@@ -1,7 +1,7 @@
 import { prisma } from '@/services/db.server'
 import { redirect, type LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { LibraryBigIcon, PackageSearchIcon } from 'lucide-react'
+import { PackageSearchIcon } from 'lucide-react'
 import invariant from 'tiny-invariant'
 
 export async function loader({ params }: LoaderFunctionArgs) {

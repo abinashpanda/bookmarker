@@ -1,6 +1,6 @@
-import { Form, Link, Outlet, useLoaderData, useNavigation } from '@remix-run/react'
+import { Form, Link, Outlet, useLoaderData, useNavigate, useNavigation, useParams } from '@remix-run/react'
 import { authenticator } from '@/services/auth.server'
-import { type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
+import { json, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
 import {
   Sidebar,
   SidebarContent,
@@ -24,11 +24,13 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu'
-import { AlbumIcon, CheckIcon, ChevronUpIcon, LibraryBigIcon, MoonIcon, SunIcon } from 'lucide-react'
+import { AlbumIcon, CheckIcon, ChevronUpIcon, LibraryBigIcon, MoonIcon, PackageSearchIcon, SunIcon } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { Theme, useTheme } from 'remix-themes'
 import { cloneElement } from 'react'
 import invariant from 'tiny-invariant'
+import { prisma } from '@/services/db.server'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Bookmarker' }, { name: 'description', content: 'Your AI powered bookmark organizer' }]
@@ -37,7 +39,15 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await authenticator.isAuthenticated(request)
   invariant(user, 'user should be authenticated')
-  return user
+  const userWorkspaces = await prisma.workspaceUserAssociation.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      workspace: true,
+    },
+  })
+  return json({ user, userWorkspaces })
 }
 
 const THEME_CONF: Record<Theme, { label: string; icon: React.ReactElement<{ className?: string }> }> = {
@@ -53,9 +63,13 @@ const THEME_CONF: Record<Theme, { label: string; icon: React.ReactElement<{ clas
 const THEMES: Theme[] = [Theme.LIGHT, Theme.DARK]
 
 export default function AppLayout() {
-  const user = useLoaderData<typeof loader>()
+  const { user, userWorkspaces } = useLoaderData<typeof loader>()
 
   const navigation = useNavigation()
+  const navigate = useNavigate()
+
+  const { slug } = useParams<{ slug?: string }>()
+  console.log(slug)
 
   const [theme, setTheme] = useTheme()
 
@@ -69,6 +83,32 @@ export default function AppLayout() {
           </div>
         </SidebarHeader>
         <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <Select
+                value={slug}
+                onValueChange={(slug) => {
+                  navigate(`/w/${slug}`)
+                }}
+              >
+                <SelectTrigger className="justify-start gap-2">
+                  <PackageSearchIcon className="size-5" />
+                  <div className="flex-1 text-left">
+                    <SelectValue placeholder="Workspace" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  {userWorkspaces.map((userWorkspace) => {
+                    return (
+                      <SelectItem key={userWorkspace.id} value={userWorkspace.workspace.slug}>
+                        {userWorkspace.workspace.name}
+                      </SelectItem>
+                    )
+                  })}
+                </SelectContent>
+              </Select>
+            </SidebarGroupContent>
+          </SidebarGroup>
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenuButton asChild>
