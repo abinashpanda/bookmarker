@@ -2,29 +2,33 @@
 /* tslint:disable */
 /* eslint-disable */
 /* deno-fmt-ignore-file */
-import "sst"
+import 'sst'
 export {}
-declare module "sst" {
+declare module 'sst' {
   export interface Resource {
-    "BOOKMARKER_AUTH_SECRET": {
-      "type": "sst.sst.Secret"
-      "value": string
+    BOOKMARKER_AUTH_SECRET: {
+      type: 'sst.sst.Secret'
+      value: string
     }
-    "BOOKMARKER_DATABASE_URL": {
-      "type": "sst.sst.Secret"
-      "value": string
+    BOOKMARKER_DATABASE_URL: {
+      type: 'sst.sst.Secret'
+      value: string
     }
-    "BOOKMARKER_GOOGLE_CLIENT_ID": {
-      "type": "sst.sst.Secret"
-      "value": string
+    BOOKMARKER_GOOGLE_CLIENT_ID: {
+      type: 'sst.sst.Secret'
+      value: string
     }
-    "BOOKMARKER_GOOGLE_CLIENT_SECRET": {
-      "type": "sst.sst.Secret"
-      "value": string
+    BOOKMARKER_GOOGLE_CLIENT_SECRET: {
+      type: 'sst.sst.Secret'
+      value: string
     }
-    "BookmarkerWeb": {
-      "type": "sst.aws.Remix"
-      "url": string
+    BOOKMARKER_OPENAI_API_KEY: {
+      type: 'sst.sst.Secret'
+      value: string
+    }
+    BookmarkerWeb: {
+      type: 'sst.aws.Remix'
+      url: string
     }
   }
 }

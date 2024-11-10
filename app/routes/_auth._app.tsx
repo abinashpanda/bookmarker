@@ -63,15 +63,13 @@ const THEME_CONF: Record<Theme, { label: string; icon: React.ReactElement<{ clas
 const THEMES: Theme[] = [Theme.LIGHT, Theme.DARK]
 
 export default function AppLayout() {
+  const [theme, setTheme] = useTheme()
+
   const { user, userWorkspaces } = useLoaderData<typeof loader>()
 
   const navigation = useNavigation()
   const navigate = useNavigate()
-
   const { slug } = useParams<{ slug?: string }>()
-  console.log(slug)
-
-  const [theme, setTheme] = useTheme()
 
   return (
     <SidebarProvider>
@@ -182,10 +180,10 @@ export default function AppLayout() {
         </SidebarFooter>
       </Sidebar>
       <div className="relative flex-1 overflow-auto">
-        <div className="sticky top-0 px-4 py-2">
+        <div className="sticky top-0 mx-auto px-4 py-2">
           <SidebarTrigger />
         </div>
-        <div className="px-4">
+        <div className="mx-auto max-w-screen-2xl px-4">
           <Outlet />
         </div>
       </div>

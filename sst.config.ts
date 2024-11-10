@@ -19,10 +19,11 @@ export default $config({
     const googleClientSecret = new sst.Secret('BOOKMARKER_GOOGLE_CLIENT_SECRET')
     const databaseUrl = new sst.Secret('BOOKMARKER_DATABASE_URL')
     const authSecret = new sst.Secret('BOOKMARKER_AUTH_SECRET')
+    const openaiApiKey = new sst.Secret('BOOKMARKER_OPENAI_API_KEY')
 
     const app = new sst.aws.Remix('BookmarkerWeb', {
       edge: false,
-      link: [googleClientId, googleClientSecret, databaseUrl, authSecret],
+      link: [googleClientId, googleClientSecret, databaseUrl, authSecret, openaiApiKey],
       domain:
         $app.stage === 'production'
           ? {
