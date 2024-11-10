@@ -30,7 +30,7 @@ import { Theme, useTheme } from 'remix-themes'
 import { cloneElement } from 'react'
 import invariant from 'tiny-invariant'
 import { prisma } from '@/services/db.server'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Bookmarker' }, { name: 'description', content: 'Your AI powered bookmark organizer' }]
@@ -88,7 +88,11 @@ export default function AppLayout() {
               <Select
                 value={slug}
                 onValueChange={(slug) => {
-                  navigate(`/w/${slug}`)
+                  if (slug === 'add') {
+                    navigate('/create-workspace')
+                  } else {
+                    navigate(`/w/${slug}`)
+                  }
                 }}
               >
                 <SelectTrigger className="justify-start gap-2">
@@ -105,6 +109,8 @@ export default function AppLayout() {
                       </SelectItem>
                     )
                   })}
+                  <SelectSeparator />
+                  <SelectItem value="add">Add Workspace</SelectItem>
                 </SelectContent>
               </Select>
             </SidebarGroupContent>

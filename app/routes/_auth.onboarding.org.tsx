@@ -8,7 +8,7 @@ import { capitalize, getDomainNameFromEmail, slugify } from '@/lib/utils'
 import { authenticator } from '@/services/auth.server'
 import { prisma } from '@/services/db.server'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type ActionFunctionArgs, json, redirect, type LoaderFunctionArgs, TypedResponse } from '@remix-run/node'
+import { type ActionFunctionArgs, json, redirect, type LoaderFunctionArgs } from '@remix-run/node'
 import { Form, Link, useLoaderData, useNavigation } from '@remix-run/react'
 import { useMemo } from 'react'
 import { FieldError } from 'react-hook-form'
@@ -87,7 +87,6 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   return match(data)
-    .returnType<Promise<TypedResponse>>()
     .with({ type: 'create-workspace' }, async ({ slug, name, domain }) => {
       if (await prisma.workspace.findUnique({ where: { slug: slug } })) {
         return json({
